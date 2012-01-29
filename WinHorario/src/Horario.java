@@ -1,20 +1,9 @@
-
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author monkey
- */
 public class Horario implements Comparable <Horario> {
     Clase[] clases;
     Dia[] dias;
     int totaldias,tiempoEnLaUni,horasmuertas;
     int diasconlahoradelacomidalibre;
-    double mediaEntrada,desviacionHoraEntrada,mediasig,desvasig;
+    double mediaEntrada,desviacionHoraEntrada,mediasig,desviacionNumAsignaturas;
     
     Horario (Clase[] c){
         clases=c;
@@ -25,7 +14,7 @@ public class Horario implements Comparable <Horario> {
         mediaEntrada=0; //sumatorio(dia[i].horafin-dia[i].horaini)/totaldias
         desviacionHoraEntrada=0;
         mediasig=0;
-        desvasig=0;
+        desviacionNumAsignaturas=0;
         diasconlahoradelacomidalibre=0;
         dias = new Dia[7];
         for (int i=0; i<7;i++) dias[i]=new Dia();
@@ -51,6 +40,7 @@ public class Horario implements Comparable <Horario> {
                     horasmuertas++;
                 }
                 
+                //10->13 y 15->15:30
                 for (int k=10; k <= 15; k++){
                     if (!dias[i].ocupado[k]) dias[i].horapacomer=true;
                 }
@@ -63,14 +53,14 @@ public class Horario implements Comparable <Horario> {
         for (int i=0; i<7; i++){
             if (dias[i].horasDeClase!=0){
                 desviacionHoraEntrada += (dias[i].ini-mediaEntrada)*(dias[i].ini-mediaEntrada);
-                desvasig += (dias[i].numasignaturas-mediasig)*(dias[i].numasignaturas-mediasig);
+                desviacionNumAsignaturas += (dias[i].numasignaturas-mediasig)*(dias[i].numasignaturas-mediasig);
                 if (dias[i].horapacomer) diasconlahoradelacomidalibre++;
             }
         }
         desviacionHoraEntrada/= totaldias-1;
         desviacionHoraEntrada=Math.sqrt(desviacionHoraEntrada);
-        desvasig/= totaldias-1;
-        desvasig=Math.sqrt(desvasig);
+        desviacionNumAsignaturas/= totaldias-1;
+        desviacionNumAsignaturas=Math.sqrt(desviacionNumAsignaturas);
     }
 
     @Override
@@ -95,7 +85,7 @@ public class Horario implements Comparable <Horario> {
                 
                 if (res == 0) res = tiempoEnLaUni - h.tiempoEnLaUni;  
                 if (res == 0){
-                    aux=desvasig-h.desvasig;
+                    aux=desviacionNumAsignaturas-h.desviacionNumAsignaturas;
                     if      (aux < 0) return -1;
                     else if (aux > 0) return 1;
                     else return 0;
