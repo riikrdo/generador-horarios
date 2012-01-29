@@ -13,6 +13,8 @@ public class Dia {
     double fin;
     public double horas;
     public double tiempo; //fin -ini
+    public double mediainifin;
+    int numasignaturas;
     
     boolean [] ocupado = new boolean[30];
     int horasmuertas;
@@ -23,6 +25,8 @@ public class Dia {
         horas=0;
         tiempo=0;
         horasmuertas=0;
+        mediainifin=0;
+        numasignaturas=0;
         for (int i=0; i<30; i++) ocupado[i]=false;
     }
     
@@ -47,6 +51,7 @@ public class Dia {
                 
         int inic=hora(c.horaini);
         int fina=hora(c.horafin);
+        numasignaturas++;
         
         for (int i=inic; i < fina; i++){
             ocupado[i]=true;

@@ -16,11 +16,17 @@ public class Horario implements Comparable <Horario> {
     int peso;
     int horasmuertas;
     
+    double media;
+    double desviacion;
+    
     Horario (Clase[] c){
         clases=c;
         totaldias=0;
         peso=0;
         horasmuertas=0;
+        
+        media=0; //sumatorio(dia[i].horafin-dia[i].horaini)/totaldias
+        desviacion=0;
         
         dias = new Dia[7];
         for (int i=0; i<7;i++) dias[i]=new Dia();
@@ -36,6 +42,7 @@ public class Horario implements Comparable <Horario> {
             {
                 peso+=dias[i].tiempo;
                 totaldias++;
+                media+=dias[i].fin-dias[i].ini;
             }
             
             int init=Dia.hora(dias[i].ini),
@@ -49,20 +56,43 @@ public class Horario implements Comparable <Horario> {
             }
         }
         
+        media/=totaldias;
+        for (int i=0; i<7; i++){
+            if (dias[i].horas!=0){
+                desviacion += (dias[i].fin-dias[i].ini-media)*(dias[i].fin-dias[i].ini-media);
+            }
+        }
+        desviacion/= (double)totaldias-1.;
+        desviacion=Math.sqrt(desviacion);
         
     }
 
     @Override
     public int compareTo(Horario h) 
     { 
-        int res = horasmuertas - h.horasmuertas;
+        int res = totaldias - h.totaldias;
         
+        if (res == 0) res = horasmuertas - h.horasmuertas;
         
         if (res == 0) res = peso - h.peso;
         
-        if (res == 0) res = totaldias - h.totaldias;
         
         return res;
+//        double res = desviacion - h.desviacion;
+        
+//        if      (res < 0) return -1;
+//        else if (res > 0) return  1;
+//        else {
+//            
+//            int r = horasmuertas - h.horasmuertas;
+//            
+//             if (r == 0) r = peso - h.peso;
+//        
+//             if (r == 0) r = totaldias - h.totaldias;
+//        
+//             return r;         
+//        }
+        
     }
     
 }
