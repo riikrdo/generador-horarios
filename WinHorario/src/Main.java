@@ -22,11 +22,14 @@ import javax.swing.table.DefaultTableModel;
 public class Main extends javax.swing.JFrame {
 
     Data datos;
+    DefaultTableModel tabla;
     /**
      * Creates new form Inter1
      */
     public Main() {
         initComponents();
+        tabla = (DefaultTableModel) jTable1.getModel();
+        setLocationRelativeTo (null);
     }
 
     /**
@@ -201,8 +204,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3)
@@ -216,9 +219,8 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel temp = (DefaultTableModel) jTable1.getModel();
         Object nuevo[]= {jTextField1.getText(),jComboBox1.getSelectedItem(),jComboBox2.getSelectedItem(), jComboBox3.getSelectedItem(), false};
-        temp.addRow(nuevo);
+        tabla.addRow(nuevo);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -227,13 +229,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+
         
-        DefaultTableModel temp = (DefaultTableModel) jTable1.getModel();
-        
-        for (int i=0; i < temp.getRowCount(); i++){
-            if ((Boolean) temp.getValueAt(i, 4) == true ){
-                temp.removeRow(i);
+        for (int i=0; i < tabla.getRowCount(); i++){
+            if ((Boolean) tabla.getValueAt(i, 4) == true ){
+                tabla.removeRow(i);
                 i--;
             }
         }
@@ -264,15 +264,15 @@ public class Main extends javax.swing.JFrame {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         
-        DefaultTableModel temp = (DefaultTableModel) jTable1.getModel();
+//        DefaultTableModel temp = (DefaultTableModel) jTable1.getModel();
         
         ArrayList <Clase> filas = new ArrayList <Clase> ();
-        for (int i=0; i< temp.getRowCount(); i++){
+        for (int i=0; i< tabla.getRowCount(); i++){
             
-            filas.add(new Clase((String) temp.getValueAt(i, 0) ,
-                                dia2int((String) temp.getValueAt(i, 1)),
-                                Double.parseDouble(((String) temp.getValueAt(i, 2)).replace(':','.')),
-                                Double.parseDouble(((String) temp.getValueAt(i, 3)).replace(':','.'))));
+            filas.add(new Clase((String) tabla.getValueAt(i, 0) ,
+                                dia2int((String) tabla.getValueAt(i, 1)),
+                                Double.parseDouble(((String) tabla.getValueAt(i, 2)).replace(':','.')),
+                                Double.parseDouble(((String) tabla.getValueAt(i, 3)).replace(':','.'))));
         }
         Collections.sort(filas);
                 
@@ -348,6 +348,7 @@ public class Main extends javax.swing.JFrame {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Main().setVisible(true);
             }
