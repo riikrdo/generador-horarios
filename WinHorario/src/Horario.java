@@ -37,18 +37,15 @@ public class Horario implements Comparable <Horario> {
         
         for (int i=0; i<7;i++)
         {
-            if (dias[i].horas != 0)
+            if (dias[i].horasDeClase != 0)
             {
-                peso+=dias[i].tiempo;
+                peso+=dias[i].tiempoEnLaUni;
                 totaldias++;
                 media+=dias[i].fin-dias[i].ini;
                 mediasig+=dias[i].numasignaturas;
             }
             
-            int init=Dia.hora(dias[i].ini),
-                 fin=Dia.hora(dias[i].fin);
-            
-            for (int j=init; j <fin; j++){
+            for (int j=dias[i].ini; j <dias[i].fin; j++){
                 if (!dias[i].ocupado[j]){
                     dias[i].horasmuertas++;
                     horasmuertas++;
@@ -59,7 +56,7 @@ public class Horario implements Comparable <Horario> {
         media/=totaldias;
         mediasig/=totaldias;
         for (int i=0; i<7; i++){
-            if (dias[i].horas!=0){
+            if (dias[i].horasDeClase!=0){
                 desviacion += (dias[i].fin-dias[i].ini-media)*(dias[i].fin-dias[i].ini-media);
                 desvasig += (dias[i].numasignaturas-mediasig)*(dias[i].numasignaturas-mediasig);
             }

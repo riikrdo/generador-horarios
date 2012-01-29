@@ -1,10 +1,9 @@
 public class Clase implements Comparable <Clase> {
     public String asig;
-    int dia; //1-7 (en realidad entre 1-5)
-    double horaini, horafin, duracion; //si empieza a las 17:30 -> horaini=17.5
+    int dia, horaini, horafin, duracion;
    
     
-    Clase (String as, int d, double i, double f) {
+    Clase (String as, int d, int i, int f) {
         asig=as;
         dia=d;
         horaini=i;
@@ -45,7 +44,6 @@ public class Clase implements Comparable <Clase> {
 
     @Override
     public int compareTo(Clase c) {
-                
         return  asig.compareTo(c.asig);
     }
 }

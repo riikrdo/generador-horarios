@@ -7,22 +7,26 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author monkey
  */
-public class Res extends javax.swing.JFrame {
+public class VistaHorarios extends javax.swing.JFrame {
     
     ArrayList <Horario> soluciones;
     
     /**
      * Creates new form Res
      */
-    public Res() {
+    public VistaHorarios() {
         initComponents();
         setLocationRelativeTo (null);
         
     }
     
-    public void setSol(ArrayList <Horario> s){
+    public void ejecuta(ArrayList <Horario> s){
+        
         soluciones=s;
         jLabel1.setText("Generados "+s.size()+" horarios");
+        
+        Collections.sort(soluciones);
+        Dibuja(soluciones.get(0));  
     }
 
     /**
@@ -254,24 +258,7 @@ public class Res extends javax.swing.JFrame {
             Dibuja(soluciones.get(seleccion));
         }
     }
-     
-    public void ejecuta(){
-        
-        Collections.sort(soluciones);
-        
-        Dibuja(soluciones.get(0));   
-    }
-    
-    int Fila(double h){
-        
-        h= (h-8)*2;
-        
-        int res= (int) h;
-        
-        if (h == res) return res;
-        else          return res+1;
-        
-    }
+         
     
     public void Dibuja(Horario h){
         
@@ -287,22 +274,13 @@ public class Res extends javax.swing.JFrame {
         
         //Dibuja
         for (int i=0; i < c.length; i++){
-            temp.setValueAt(c[i].asig, Fila(c[i].horaini), c[i].dia);
-            for (int j=Fila(c[i].horaini)+1; j < Fila(c[i].horafin) ; j++) {
+            temp.setValueAt(c[i].asig, c[i].horaini, c[i].dia);
+            for (int j=c[i].horaini+1; j < c[i].horafin ; j++) {
                 temp.setValueAt("-", j, c[i].dia);
             }
         }
-        jTextPane1.setText("Dias con clases: "
+        jTextPane1.setText("Dias con clases:\n"
                        +h.totaldias
-                       +"\n\nHoras en la uni: \n"
-                       +h.dias[0].tiempo+"+"
-                       +h.dias[1].tiempo+"+"
-                       +h.dias[2].tiempo+"+"
-                       +h.dias[3].tiempo+"+"
-                       +h.dias[4].tiempo+"+"
-                       +h.dias[5].tiempo+"+"
-                       +h.dias[6].tiempo+"="
-                       +h.peso
                        +"\n\nAsignaturas:\n"
                        +h.dias[0].numasignaturas+","
                        +h.dias[1].numasignaturas+","
@@ -311,6 +289,15 @@ public class Res extends javax.swing.JFrame {
                        +h.dias[4].numasignaturas+","
                        +h.dias[5].numasignaturas+","
                        +h.dias[6].numasignaturas
+                       +"\n\nMedias horas en la uni: \n"
+                       +h.dias[0].tiempoEnLaUni+"+"
+                       +h.dias[1].tiempoEnLaUni+"+"
+                       +h.dias[2].tiempoEnLaUni+"+"
+                       +h.dias[3].tiempoEnLaUni+"+"
+                       +h.dias[4].tiempoEnLaUni+"+"
+                       +h.dias[5].tiempoEnLaUni+"+"
+                       +h.dias[6].tiempoEnLaUni+"="
+                       +h.peso
                        +"\n\nMedias horas muertas:\n"
                        +h.dias[0].horasmuertas+"+"
                        +h.dias[1].horasmuertas+"+"
@@ -344,13 +331,13 @@ public class Res extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Res.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaHorarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Res.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaHorarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Res.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaHorarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Res.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaHorarios.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -359,8 +346,9 @@ public class Res extends javax.swing.JFrame {
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
-                new Res().setVisible(true);
+                new VistaHorarios().setVisible(true);
             }
         });
     }
