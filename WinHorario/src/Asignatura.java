@@ -9,7 +9,7 @@ public class Asignatura {
         nombre=n;
     }
     
-    void Clase(int dia, double ini, double fin){
+    void Clase(int dia, int ini, int fin){
         clases.add(new Clase(nombre,dia,ini,fin));
     }
     
