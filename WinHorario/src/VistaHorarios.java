@@ -1,6 +1,10 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -49,6 +53,7 @@ public class VistaHorarios extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        jButton4 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -163,6 +168,13 @@ public class VistaHorarios extends javax.swing.JFrame {
         jTextPane1.setEditable(false);
         jScrollPane2.setViewportView(jTextPane1);
 
+        jButton4.setText("Exportar este horario");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonExportar(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,8 +194,9 @@ public class VistaHorarios extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jButton3))
+                    .addComponent(jButton4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -207,7 +220,9 @@ public class VistaHorarios extends javax.swing.JFrame {
                             .addComponent(jButton3))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(109, Short.MAX_VALUE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4)
+                        .addContainerGap(66, Short.MAX_VALUE))))
         );
 
         pack();
@@ -250,6 +265,113 @@ public class VistaHorarios extends javax.swing.JFrame {
             actualizaHorario();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+String ExportDia(int d){
+        String res;
+        
+        switch (d){
+                case 1: res="MO"; break;
+                case 2: res="TU"; break;
+                case 3: res="WE"; break;
+                case 4: res="TH"; break;
+                case 5: res="FR"; break;
+                case 6: res="SA"; break;
+               default: res="SU"; break;
+        }
+        
+        return res;
+    }
+    
+    String ExportHora(int h){
+        String res; 
+        switch (h){
+            case  0: res="T080000"; break;
+            case  1: res="T083000"; break;
+            case  2: res="T090000"; break;
+            case  3: res="T093000"; break;
+            case  4: res="T100000"; break;
+            case  5: res="T103000"; break;
+            case  6: res="T110000"; break;
+            case  7: res="T113000"; break;
+            case  8: res="T120000"; break;
+            case  9: res="T123000"; break;
+            case 10: res="T130000"; break;
+            case 11: res="T133000"; break;
+            case 12: res="T140000"; break;
+            case 13: res="T143000"; break;
+            case 14: res="T150000"; break;
+            case 15: res="T153000"; break;
+            case 16: res="T160000"; break;
+            case 17: res="T163000"; break;
+            case 18: res="T170000"; break;
+            case 19: res="T173000"; break;
+            case 20: res="T180000"; break;
+            case 21: res="T183000"; break;
+            case 22: res="T190000"; break;
+            case 23: res="T193000"; break;
+            case 24: res="T200000"; break;
+            case 25: res="T203000"; break;
+            case 26: res="T210000"; break;
+            case 27: res="T213000"; break;
+            case 28: res="T220000"; break;
+            case 29: res="T223000"; break;
+            default: res="T230000"; break;
+        }
+        return res;
+    }
+    
+    String ExportFecha(int d){
+        switch (d) {
+            case 1: return "02";
+            case 2: return "03";
+            case 3: return "04";
+            case 4: return "05";
+            case 5: return "06";
+            case 6: return "07";
+           default: return "08";
+        }
+    }
+    private void BotonExportar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonExportar
+      
+        Clase[] horario=soluciones.get(Integer.parseInt(jTextField2.getText())-1).clases;
+        
+        
+        String export="BEGIN:VCALENDAR\r\n";
+        for (int i=0; i < horario.length; i++){
+            export += "BEGIN:VEVENT\r\nSUMMARY:"+horario[i].asig
+                    + "\r\nDTSTART;TZID=Europe/Madrid:201201"+ExportFecha(horario[i].dia)+ExportHora(horario[i].horaini)
+                    + "\r\nDTEND;TZID=Europe/Madrid:201201"+ExportFecha(horario[i].dia)+ExportHora(horario[i].horafin)
+                    + "\r\nRRULE:FREQ=WEEKLY;BYDAY="+ExportDia(horario[i].dia)+"\r\nEND:VEVENT\r\n";
+        }
+        export += "END:VCALENDAR";
+       
+        
+        
+        javax.swing.JFileChooser jF1= new javax.swing.JFileChooser(); 
+        File f = new File("horario.ics"); 
+        jF1.setSelectedFile(f); 
+        try{ 
+            if(jF1.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
+            { 
+                String direccion = jF1.getSelectedFile().getAbsolutePath(); 
+                FileWriter  Guardx=new FileWriter(direccion);
+                Guardx.write(export);
+                Guardx.close(); 
+                JOptionPane.showMessageDialog(this,"Exportado correctamente. ","Exportar",JOptionPane.INFORMATION_MESSAGE);
+//                if(new File(direccion).exists())
+//                { 
+//                    if(0 == JOptionPane.showConfirmDialog(this,"El fichero existe, ¿deseas reemplazarlo?","Fichero existente",JOptionPane.YES_NO_OPTION)){
+//                    
+//                    }
+//                } 
+            }
+
+        }catch (Exception ex){ 
+
+            System.err.println("Fallo al guardar.");
+
+        } 
+        
+    }//GEN-LAST:event_BotonExportar
 
     void actualizaHorario(){
         
@@ -357,6 +479,7 @@ public class VistaHorarios extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
