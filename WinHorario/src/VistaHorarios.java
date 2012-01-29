@@ -433,7 +433,7 @@ String ExportDia(int d){
                        +"\n\nMedia y desviacion hora de entrada;\n"
                        +h.mediaEntrada+", "+h.desviacionHoraEntrada
                        +"\n\nMedia y desviacion num asignaturas:\n"
-                       +h.mediasig+", "+h.desvasig
+                       +h.mediasig+", "+h.desviacionNumAsignaturas
                        +"\n\nDias tiempo para comer:\n"
                        +h.diasconlahoradelacomidalibre
                    );
