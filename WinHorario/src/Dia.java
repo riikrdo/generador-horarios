@@ -14,7 +14,7 @@ public class Dia {
     
     boolean [] ocupado = new boolean[30];
     int horasmuertas;
-    
+    public boolean horapacomer;
     Dia(){
         ini=30;
         fin=0;
@@ -23,6 +23,7 @@ public class Dia {
         horasmuertas=0;
         mediainifin=0;
         numasignaturas=0;
+        horapacomer=false;
         for (int i=0; i<30; i++) ocupado[i]=false;
     }
     

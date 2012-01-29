@@ -205,7 +205,7 @@ public class VistaHorarios extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jLabel1)
@@ -219,10 +219,10 @@ public class VistaHorarios extends javax.swing.JFrame {
                             .addComponent(jButton2)
                             .addComponent(jButton3))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4)
-                        .addContainerGap(66, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
 
         pack();
@@ -412,7 +412,7 @@ String ExportDia(int d){
                        +h.dias[4].numasignaturas+","
                        +h.dias[5].numasignaturas+","
                        +h.dias[6].numasignaturas
-                       +"\n\nMedias horas en la uni: \n"
+                       +"\n\nMedias-horas en la uni: \n"
                        +h.dias[0].tiempoEnLaUni+"+"
                        +h.dias[1].tiempoEnLaUni+"+"
                        +h.dias[2].tiempoEnLaUni+"+"
@@ -420,8 +420,8 @@ String ExportDia(int d){
                        +h.dias[4].tiempoEnLaUni+"+"
                        +h.dias[5].tiempoEnLaUni+"+"
                        +h.dias[6].tiempoEnLaUni+"="
-                       +h.peso
-                       +"\n\nMedias horas muertas:\n"
+                       +h.tiempoEnLaUni
+                       +"\n\nMedias-horas muertas:\n"
                        +h.dias[0].horasmuertas+"+"
                        +h.dias[1].horasmuertas+"+"
                        +h.dias[2].horasmuertas+"+"
@@ -430,10 +430,13 @@ String ExportDia(int d){
                        +h.dias[5].horasmuertas+"+"
                        +h.dias[6].horasmuertas+"="
                        +h.horasmuertas
-                       +"\n\nDesviacion ultimahora-horaentrada:\n"
-                       +h.desviacion
-                       +"\n\nDesviacion asignaturas*dia:\n"
-                       +h.desvasig);
+                       +"\n\nMedia y desviacion hora de entrada;\n"
+                       +h.mediaEntrada+", "+h.desviacionHoraEntrada
+                       +"\n\nMedia y desviacion num asignaturas:\n"
+                       +h.mediasig+", "+h.desvasig
+                       +"\n\nDias tiempo para comer:\n"
+                       +h.diasconlahoradelacomidalibre
+                   );
     }
     
     public static void main(String args[]) {
