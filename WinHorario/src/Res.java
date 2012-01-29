@@ -16,7 +16,7 @@ public class Res extends javax.swing.JFrame {
      */
     public Res() {
         initComponents();
-        
+        setLocationRelativeTo (null);
         
     }
     
@@ -44,12 +44,8 @@ public class Res extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -124,7 +120,7 @@ public class Res extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(6).setResizable(false);
         jTable1.getColumnModel().getColumn(7).setResizable(false);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Horarios generados");
 
         jLabel2.setText("Mostrar horario:");
 
@@ -156,17 +152,12 @@ public class Res extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("jLabel3");
+        jScrollPane2.setEnabled(false);
 
-        jLabel4.setText("jLabel4");
-
-        jLabel5.setText("jLabel5");
-
-        jLabel6.setText("jLabel6");
-
-        jLabel7.setText("jLabel7");
-
-        jLabel8.setText("jLabel8");
+        jTextPane1.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        jTextPane1.setBorder(null);
+        jTextPane1.setEditable(false);
+        jScrollPane2.setViewportView(jTextPane1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,18 +173,13 @@ public class Res extends javax.swing.JFrame {
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1))
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3))
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 559, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -201,7 +187,7 @@ public class Res extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jLabel1)
@@ -214,19 +200,9 @@ public class Res extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2)
                             .addComponent(jButton3))
-                        .addGap(13, 13, 13)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel7)
-                        .addContainerGap())))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(109, Short.MAX_VALUE))))
         );
 
         pack();
@@ -316,33 +292,38 @@ public class Res extends javax.swing.JFrame {
                 temp.setValueAt("-", j, c[i].dia);
             }
         }
-        jLabel3.setText("Dias con clases: "+h.totaldias);
-        jLabel4.setText("Horas en la uni: ");
-        jLabel5.setText(h.dias[0].tiempo+"+"
+        jTextPane1.setText("Dias con clases: "
+                       +h.totaldias
+                       +"\n\nHoras en la uni: \n"
+                       +h.dias[0].tiempo+"+"
                        +h.dias[1].tiempo+"+"
                        +h.dias[2].tiempo+"+"
                        +h.dias[3].tiempo+"+"
                        +h.dias[4].tiempo+"+"
                        +h.dias[5].tiempo+"+"
                        +h.dias[6].tiempo+"="
-                       +h.peso);
-        jLabel6.setText("Medias horas muertas: "+h.dias[0].horasmuertas+"+"+
-                                                 h.dias[1].horasmuertas+"+"+
-                                                 h.dias[2].horasmuertas+"+"+
-                                                 h.dias[3].horasmuertas+"+"+
-                                                 h.dias[4].horasmuertas+"+"+
-                                                 h.dias[5].horasmuertas+"+"+
-                                                 h.dias[6].horasmuertas+"="+
-                                                 h.horasmuertas);
-        jLabel7.setText("Desviacion: "+h.desviacion);
-        jLabel8.setText("Asignaturas: "+h.dias[0].numasignaturas+","
-                                       +h.dias[1].numasignaturas+","
-                                       +h.dias[2].numasignaturas+","
-                                       +h.dias[3].numasignaturas+","
-                                       +h.dias[4].numasignaturas+","
-                                       +h.dias[5].numasignaturas+","
-                                       +h.dias[6].numasignaturas);
-        
+                       +h.peso
+                       +"\n\nAsignaturas:\n"
+                       +h.dias[0].numasignaturas+","
+                       +h.dias[1].numasignaturas+","
+                       +h.dias[2].numasignaturas+","
+                       +h.dias[3].numasignaturas+","
+                       +h.dias[4].numasignaturas+","
+                       +h.dias[5].numasignaturas+","
+                       +h.dias[6].numasignaturas
+                       +"\n\nMedias horas muertas:\n"
+                       +h.dias[0].horasmuertas+"+"
+                       +h.dias[1].horasmuertas+"+"
+                       +h.dias[2].horasmuertas+"+"
+                       +h.dias[3].horasmuertas+"+"
+                       +h.dias[4].horasmuertas+"+"
+                       +h.dias[5].horasmuertas+"+"
+                       +h.dias[6].horasmuertas+"="
+                       +h.horasmuertas
+                       +"\n\nDesviacion ultimahora-horaentrada:\n"
+                       +h.desviacion
+                       +"\n\nDesviacion asignaturas*dia:\n"
+                       +h.desvasig);
     }
     
     public static void main(String args[]) {
@@ -390,15 +371,11 @@ public class Res extends javax.swing.JFrame {
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 }

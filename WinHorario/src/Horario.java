@@ -12,12 +12,9 @@
 public class Horario implements Comparable <Horario> {
     Clase[] clases;
     Dia[] dias;
-    int totaldias;
-    int peso;
-    int horasmuertas;
+    int totaldias,peso,horasmuertas;
     
-    double media;
-    double desviacion;
+    double media,desviacion,mediasig,desvasig;
     
     Horario (Clase[] c){
         clases=c;
@@ -27,6 +24,8 @@ public class Horario implements Comparable <Horario> {
         
         media=0; //sumatorio(dia[i].horafin-dia[i].horaini)/totaldias
         desviacion=0;
+        mediasig=0;
+        desvasig=0;
         
         dias = new Dia[7];
         for (int i=0; i<7;i++) dias[i]=new Dia();
@@ -43,6 +42,7 @@ public class Horario implements Comparable <Horario> {
                 peso+=dias[i].tiempo;
                 totaldias++;
                 media+=dias[i].fin-dias[i].ini;
+                mediasig+=dias[i].numasignaturas;
             }
             
             int init=Dia.hora(dias[i].ini),
@@ -57,14 +57,17 @@ public class Horario implements Comparable <Horario> {
         }
         
         media/=totaldias;
+        mediasig/=totaldias;
         for (int i=0; i<7; i++){
             if (dias[i].horas!=0){
                 desviacion += (dias[i].fin-dias[i].ini-media)*(dias[i].fin-dias[i].ini-media);
+                desvasig += (dias[i].numasignaturas-mediasig)*(dias[i].numasignaturas-mediasig);
             }
         }
-        desviacion/= (double)totaldias-1.;
+        desviacion/= totaldias-1;
         desviacion=Math.sqrt(desviacion);
-        
+        desvasig/= totaldias-1;
+        desvasig=Math.sqrt(desvasig);
     }
 
     @Override
