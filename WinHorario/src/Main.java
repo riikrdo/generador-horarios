@@ -18,6 +18,8 @@ public class Main extends javax.swing.JFrame {
     int[] horarioBT; //Se emplea en el Backtracking
     public ArrayList <Horario> soluciones = new ArrayList <Horario>  ();
         
+    boolean sustituidoPorDuracion=false;
+    
     public Main() {
         //Inicializa componentes
         initComponents();
@@ -51,6 +53,7 @@ public class Main extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -130,19 +133,29 @@ public class Main extends javax.swing.JFrame {
         jMenuItem1.setText("Importar desde fichero");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                MenuImportar(evt);
             }
         });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem3.setText("Sustituir hora final por duración");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuSustituir(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Ayuda");
 
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         jMenuItem2.setText("Acerca de");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                MenuAbout(evt);
             }
         });
         jMenu2.add(jMenuItem2);
@@ -167,24 +180,23 @@ public class Main extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(99, 99, 99)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(102, 102, 102)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(450, 450, 450)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                         .addGap(178, 178, 178))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
@@ -196,18 +208,21 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBox1)
+                        .addComponent(jComboBox2)
+                        .addComponent(jComboBox3)
+                        .addComponent(jButton1))
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -222,12 +237,45 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
+      
+    
     private void BotonInsertarFila(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonInsertarFila
 
+        String fin=(String) jComboBox3.getSelectedItem();
+                
+        if (!fin.contains(":"))
+        {
+            double ini= Double.parseDouble(((String) jComboBox2.getSelectedItem() ).replace(":", ".")) + Double.parseDouble(fin);
+            
+            int partentera = (int) ini;
+            double pdecimal =  ini - partentera;
+            
+            
+            if (pdecimal > .5){
+                fin="00";
+                partentera++;
+            }
+            else if (pdecimal > .2){
+                fin="30";
+            }
+            else{
+                fin="00";
+            }
+               
+                        
+            if (partentera < 10){
+                fin="0"+partentera+":"+fin;
+            }
+            else
+            {
+                fin=partentera+":"+fin;
+            }
+        }
+        
         Object nuevo[]= {jTextField1.getText(),
                          jComboBox1.getSelectedItem(),
                          jComboBox2.getSelectedItem(), 
-                         jComboBox3.getSelectedItem(), false};
+                         fin, false};
         tabla.addRow(nuevo);
     }//GEN-LAST:event_BotonInsertarFila
 
@@ -269,9 +317,10 @@ public class Main extends javax.swing.JFrame {
     private void BotonGenerarHorarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGenerarHorarios
      if (tabla.getRowCount() > 0){
         ArrayList <Clase> filas = new ArrayList <Clase> ();
-        
+        int horaini;
         for (int i=0; i< tabla.getRowCount(); i++)
         {
+//            horaini=hora(Double.parseDouble(((String) tabla.getValueAt(i, 2)).replace(':','.')));
             filas.add(new Clase((String) tabla.getValueAt(i, 0) ,
                                 dia2int((String) tabla.getValueAt(i, 1)),
                                 hora(Double.parseDouble(((String) tabla.getValueAt(i, 2)).replace(':','.'))),
@@ -357,7 +406,7 @@ public class Main extends javax.swing.JFrame {
         }
     }
     
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void MenuImportar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuImportar
         
         //Muestra cuadro selector de archivos
         JFileChooser fileChooser = new JFileChooser();
@@ -434,14 +483,34 @@ public class Main extends javax.swing.JFrame {
                     System.err.println("Fichero no encontrado.");
             }
         }
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_MenuImportar
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void MenuAbout(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuAbout
        JOptionPane.showMessageDialog(this,
-"Realizado por Arturo Serna León \n Dudas: arturoserna@gmail.com \n Licencia GNU GPL v3",
+"Autores:\n Arturo Serna León \n Esther Marta Vicente Marrana\n\nDudas: arturoserna@gmail.com\n\n Licencia GNU GPL v3",
 "Acerca de",
 JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_MenuAbout
+
+    private void MenuSustituir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSustituir
+        // TODO add your handling code here:
+        
+        if (sustituidoPorDuracion){
+            sustituidoPorDuracion=false;
+            jLabel4.setText("Hora final");
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00" }));
+            jComboBox3.setSelectedIndex(2);
+            jMenuItem3.setText("Sustituir hora final por duración");
+        }
+        else
+        {
+            sustituidoPorDuracion=true;
+            jLabel4.setText("Duración");
+            jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0.30","1.00","1.30","2.00", "2.30", "3.00", "3.30", "4.00", "4.30", "5.00", "5.30", "6.00", "6.30", "7.00", "7.30", "8.00", "8.30", "9.00"} ));
+            jComboBox3.setSelectedIndex(3);
+            jMenuItem3.setText("Sustituir duración por hora final");
+        }
+    }//GEN-LAST:event_MenuSustituir
 
     
     public static void main(String args[]) {
@@ -499,6 +568,7 @@ JOptionPane.INFORMATION_MESSAGE);
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
