@@ -147,7 +147,7 @@ public class Main extends javax.swing.JFrame {
         jMenu1.add(jMenuItem4);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Importar desde fichero de texto");
+        jMenuItem1.setText("Importar fichero de texto");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuImportar(evt);
@@ -511,7 +511,7 @@ public class Main extends javax.swing.JFrame {
 
     private void MenuAbout(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuAbout
        JOptionPane.showMessageDialog(this,
-"Autores:\n Arturo Serna León \n Esther Marta Vicente Marrana\n\nContacto:\n arturoserna@gmail.com\n\nLicencias:\n GNU GPL v3\n Creative Commons 3.0 BY-SA",
+"monkey! Generador de horarios\n\nVersión: 0.03\n\nAutores:\n Arturo Serna León \n Esther Marta Vicente Marrana\n\nContacto:\n arturoserna@gmail.com\n\nLicencias:\n GNU GPL v3\n Creative Commons 3.0 BY-SA",
 "Acerca de",
 JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_MenuAbout
