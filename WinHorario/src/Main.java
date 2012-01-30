@@ -2,8 +2,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -217,9 +215,9 @@ public class Main extends javax.swing.JFrame {
                         .addGap(450, 450, 450)
                         .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                         .addGap(178, 178, 178))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -242,10 +240,10 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jButton1))
                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5))
         );
 
@@ -513,7 +511,7 @@ public class Main extends javax.swing.JFrame {
 
     private void MenuAbout(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuAbout
        JOptionPane.showMessageDialog(this,
-"Autores:\n Arturo Serna León \n Esther Marta Vicente Marrana\n\nDudas: arturoserna@gmail.com\n\n Licencia GNU GPL v3",
+"Autores:\n Arturo Serna León \n Esther Marta Vicente Marrana\n\nContacto:\n arturoserna@gmail.com\n\nLicencias:\n GNU GPL v3\n Creative Commons 3.0 BY-SA",
 "Acerca de",
 JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_MenuAbout
