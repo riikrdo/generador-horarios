@@ -1,0 +1,48 @@
+
+******************************************************************
+                               monkey! Generador de horarios v0.02
+******************************************************************
+
+Introduce los turnos de cada asignatura y la aplicación genera todos los posibles horarios.
+
+Los horarios pueden ser exportados en formato .ics, para importarlos en Google Calendar.
+
+
+******************************************************************
+                                                           Ejecución                           
+******************************************************************
+                                       
+Ejecutar:                 WinHorario.jar                 
+                                       
+Por terminal:       java -jar WinHorario.jar  
+
+
+******************************************************************
+                                                Instrucciones de uso                       
+******************************************************************
+
+Inserta los turnos de las asignaturas y pulsa generar horarios.
+
+Si prefieres introducir la hora final de un turno en vez de la duración  pulsa Ctrl+D, o Archivo->Sustituir duración por hora final (es reversible).
+
+También puedes importar los turnos desde un fichero pulsando Ctrl+I, o Archivo-> Importar desde fichero.
+El formato de entrada es el especificado en "ejemplo-entrada.txt".
+
+"Exportar este horario" creará un .ics del horario mostrado. Este archivo podrá ser importado en Google Calendar.
+
+
+******************************************************************
+                                                             Autoría                                                                      
+******************************************************************
+
+Arturo Serna León
+Esther Marta Vicente Marrana
+
+Dudas: arturoserna@gmail.com
+
+
+******************************************************************
+                Licencia GNU GPL v3    -  Creative Commons v3 by-sa
+******************************************************************
+
+
