@@ -1,3 +1,4 @@
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -234,11 +235,11 @@ public class VistaHorarios extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
-        // TODO add your handling code here:
-        
-        if (evt.getKeyCode() == 13){
-            actualizaHorario();
-        }
+       
+        actualizaHorario();
+//        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+//            actualizaHorario();
+//        }
     }//GEN-LAST:event_jTextField2KeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

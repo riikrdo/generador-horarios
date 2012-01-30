@@ -24,6 +24,8 @@ public class Horario implements Comparable <Horario> {
             dias[clases[i].dia-1].Clase(c[i]);
         }
         
+        
+        boolean flagcomer=false;        
         for (int i=0; i<7;i++)
         {
             if (dias[i].horasDeClase != 0)
@@ -42,7 +44,17 @@ public class Horario implements Comparable <Horario> {
                 
                 //10->13 y 15->15:30
                 for (int k=10; k <= 15; k++){
-                    if (!dias[i].ocupado[k]) dias[i].horapacomer=true;
+                    
+                    if (!dias[i].ocupado[k])
+                    {
+                        if (flagcomer) 
+                        {
+                            dias[i].horapacomer=true;
+                            horasmuertas-=2; //No se considera hora muerta comer
+                        }
+                        else            flagcomer=true;
+                    }
+                    else flagcomer=false;
                 }
                 
             }
