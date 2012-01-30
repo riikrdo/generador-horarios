@@ -1,9 +1,9 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -48,10 +48,11 @@ public class Main extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -61,6 +62,7 @@ public class Main extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("monkey! Generador de horarios");
+        setFocusable(false);
         setIconImage(new ImageIcon("monkey.png").getImage());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -68,7 +70,7 @@ public class Main extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Asignatura", "Día", "Hora inicial", "Hora final", "Seleccionar"
+                "Asignatura", "Día", "Hora inicial", "Hora final", "Eliminar"
             }
         ) {
             Class[] types = new Class [] {
@@ -86,7 +88,13 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.setRowSelectionAllowed(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Insertar");
@@ -120,17 +128,28 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Eliminar selección");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotonEliminarSeleccion(evt);
-            }
-        });
-
         jMenu1.setText("Archivo");
 
+        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem5.setText("Abrir tabla de turnos");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuAbrir(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
+
+        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem4.setText("Guardar tabla de turnos");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Guardar(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
+
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Importar desde fichero");
+        jMenuItem1.setText("Importar desde fichero de texto");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuImportar(evt);
@@ -200,8 +219,7 @@ public class Main extends javax.swing.JFrame {
                         .addGap(178, 178, 178))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -226,9 +244,7 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(jLabel5))
         );
@@ -236,8 +252,6 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-      
     
     private void BotonInsertarFila(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonInsertarFila
 
@@ -278,15 +292,6 @@ public class Main extends javax.swing.JFrame {
                          fin, false};
         tabla.addRow(nuevo);
     }//GEN-LAST:event_BotonInsertarFila
-
-    private void BotonEliminarSeleccion(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonEliminarSeleccion
-        for (int i=0; i < tabla.getRowCount(); i++){
-            if ((Boolean) tabla.getValueAt(i, 4) == true ){
-                tabla.removeRow(i);
-                i--;
-            }
-        }
-    }//GEN-LAST:event_BotonEliminarSeleccion
 
     int dia2int ( String dia){
         if      (dia.equals("Lunes"))     return 1;
@@ -358,15 +363,36 @@ public class Main extends javax.swing.JFrame {
 
     void generaHorarios()
     {
-        //Realiza backtracking
-        horarioBT = new int[Asignaturas.size()];
-        backtrack(0);
+        if (Asignaturas.size() > 0)
+        {
+            //Realiza backtracking
+            horarioBT = new int[Asignaturas.size()];
+            backtrack(0);
         
-        //Carga vista de horarios
-        VistaHorarios res=new VistaHorarios();
-        res.setVisible(true);
-        res.ejecuta(soluciones);
-        this.setVisible(false);
+            if (soluciones.size() > 0)
+            {
+                //Carga vista de horarios
+                VistaHorarios res=new VistaHorarios();
+                res.setVisible(true);
+                
+                ArrayList <Horario>  mando=new ArrayList <Horario> ();
+                mando.addAll(soluciones);
+                
+                res.ejecuta(mando,this);
+                this.setVisible(false);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this,"No existen combinaciones posibles con este horario :(",
+                                             "Cachis...",JOptionPane.ERROR_MESSAGE);
+            }
+        
+        
+            //Limpia BT
+            Asignaturas.clear();
+            maxTurnos=0;
+            soluciones.clear();   
+        }
     }
      void IncluyeEnSoluciones() {
         
@@ -511,6 +537,88 @@ JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_MenuSustituir
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        for (int i=0; i < tabla.getRowCount(); i++){
+            if ((Boolean) tabla.getValueAt(i, 4) == true ){
+                
+                if ((JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,"¿Quieres eliminar este turno?","Eliminar turno",JOptionPane.YES_NO_OPTION))){
+                    tabla.removeRow(i);
+                    
+                }
+                else
+                {
+                    tabla.setValueAt(false, i, 4);
+                }
+                
+//                i--;
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void Guardar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar
+        // TODO add your handling code here:
+        javax.swing.JFileChooser jF1= new javax.swing.JFileChooser(); 
+        File f = new File("turnos.mnk"); 
+        jF1.setSelectedFile(f); 
+        try{ 
+            if(jF1.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
+            { 
+                String direccion = jF1.getSelectedFile().getAbsolutePath(); 
+                
+                FileOutputStream fo = new FileOutputStream(direccion);
+                ObjectOutputStream os = new ObjectOutputStream(fo);
+                
+                os.writeObject(tabla.getDataVector());
+                os.close();
+                fo.close();
+            }
+        }catch (Exception ex){ 
+
+            System.err.println("Fallo al guardar.");
+
+        } 
+    }//GEN-LAST:event_Guardar
+
+    private void MenuGuardar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void MenuAbrir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuAbrir
+                //Muestra cuadro selector de archivos
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.showOpenDialog(this);
+        File ruta = fileChooser.getSelectedFile();
+        
+        //Extrae datos del fichero
+        if (ruta != null)
+        {
+            try 
+            {
+                FileInputStream fi = new FileInputStream(ruta);
+                ObjectInputStream is = new ObjectInputStream(fi);
+                try {
+
+                    Vector r = (Vector) is.readObject();
+//                        Object [] d = new String [] { "Asignatura", "Día", "Hora inicial", "Hora final", "Eliminar"};
+                    Vector d = new Vector();
+                    d.addElement("Asignatura");
+                    d.addElement("Día");
+                    d.addElement("Hora inicial");
+                    d.addElement("Hora final");
+                    d.addElement("Eliminar");
+                    tabla.setDataVector(r,d);
+
+                } catch (ClassNotFoundException ex) {
+                    System.err.println("Error al abrir el fichero.");
+                }
+            } catch (IOException ex) {
+                    System.err.println("Error al abrir el fichero.");
+            }
+        }
+    }//GEN-LAST:event_MenuAbrir
+
     
     public static void main(String args[]) {
         /*
@@ -553,7 +661,6 @@ JOptionPane.INFORMATION_MESSAGE);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
@@ -568,6 +675,8 @@ JOptionPane.INFORMATION_MESSAGE);
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;

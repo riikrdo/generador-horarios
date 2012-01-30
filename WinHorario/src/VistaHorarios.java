@@ -1,4 +1,4 @@
-import java.awt.event.KeyEvent;
+import java.awt.Component;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 public class VistaHorarios extends javax.swing.JFrame {
     
     ArrayList <Horario> soluciones;
-    
+    Component anterior;
     /**
      * Creates new form Res
      */
@@ -24,8 +24,8 @@ public class VistaHorarios extends javax.swing.JFrame {
         
     }
     
-    public void ejecuta(ArrayList <Horario> s){
-        
+    public void ejecuta(ArrayList <Horario> s, Component ant){
+        anterior=ant;
         soluciones=s;
         jLabel1.setText("Generados "+s.size()+" horarios");
         
@@ -55,6 +55,7 @@ public class VistaHorarios extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -176,13 +177,20 @@ public class VistaHorarios extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Volver");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuVolver(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel1)
                         .addGroup(layout.createSequentialGroup()
@@ -196,7 +204,10 @@ public class VistaHorarios extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3))
-                    .addComponent(jButton4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE)
                 .addContainerGap())
@@ -222,7 +233,9 @@ public class VistaHorarios extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton4)
+                            .addComponent(jButton5))
                         .addContainerGap())))
         );
 
@@ -335,7 +348,7 @@ String ExportDia(int d){
       
         Clase[] horario=soluciones.get(Integer.parseInt(jTextField2.getText())-1).clases;
         
-        
+        //Crea el .ics
         String export="BEGIN:VCALENDAR\r\n";
         for (int i=0; i < horario.length; i++){
             export += "BEGIN:VEVENT\r\nSUMMARY:"+horario[i].asig
@@ -344,9 +357,37 @@ String ExportDia(int d){
                     + "\r\nRRULE:FREQ=WEEKLY;BYDAY="+ExportDia(horario[i].dia)+"\r\nEND:VEVENT\r\n";
         }
         export += "END:VCALENDAR";
-       
-        
-        
+              
+        //Guardar en fichero
+//        try{ 
+//            javax.swing.JFileChooser jF1=new javax.swing.JFileChooser(); ;
+//            String direccion; 
+//            FileWriter  Guardx;
+//            File f= new File("horario.ics"); 
+//            boolean guardado=false;
+//
+//            while (!guardado)
+//            {
+//                if(jF1.showSaveDialog(null)==JFileChooser.APPROVE_OPTION)
+//                { 
+//                    jF1.setSelectedFile(f); 
+//                    direccion = jF1.getSelectedFile().getAbsolutePath(); 
+//                    Guardx=new FileWriter(direccion);
+//                    f = new File(direccion);
+//                    
+//                    if(f.exists() && (JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(this,"Ya existe un fichero con este nombre. ¿Deseas reemplazarlo?","Fichero existente",JOptionPane.YES_NO_OPTION)))
+//                    {
+//                        //nada
+//                    }
+//                    else
+//                    {
+//                        Guardx.write(export);
+//                        Guardx.close(); 
+//                        JOptionPane.showMessageDialog(this,"Exportado correctamente. ","Exportar",JOptionPane.INFORMATION_MESSAGE);
+//                        guardado=true;
+//                    }
+//                }
+//            }
         javax.swing.JFileChooser jF1= new javax.swing.JFileChooser(); 
         File f = new File("horario.ics"); 
         jF1.setSelectedFile(f); 
@@ -357,15 +398,8 @@ String ExportDia(int d){
                 FileWriter  Guardx=new FileWriter(direccion);
                 Guardx.write(export);
                 Guardx.close(); 
-                JOptionPane.showMessageDialog(this,"Exportado correctamente. ","Exportar",JOptionPane.INFORMATION_MESSAGE);
-//                if(new File(direccion).exists())
-//                { 
-//                    if(0 == JOptionPane.showConfirmDialog(this,"El fichero existe, ¿deseas reemplazarlo?","Fichero existente",JOptionPane.YES_NO_OPTION)){
-//                    
-//                    }
-//                } 
+                JOptionPane.showMessageDialog(this,"Horario exportado.","Exportar",JOptionPane.INFORMATION_MESSAGE);
             }
-
         }catch (Exception ex){ 
 
             System.err.println("Fallo al guardar.");
@@ -373,6 +407,13 @@ String ExportDia(int d){
         } 
         
     }//GEN-LAST:event_BotonExportar
+
+    private void menuVolver(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuVolver
+        // TODO add your handling code here:
+        anterior.setVisible(true);
+        this.setEnabled(false);
+        this.setVisible(false);
+    }//GEN-LAST:event_menuVolver
 
     void actualizaHorario(){
         
@@ -484,6 +525,7 @@ String ExportDia(int d){
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
