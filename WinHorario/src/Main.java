@@ -18,7 +18,7 @@ public class Main extends javax.swing.JFrame {
     int[] horarioBT; //Se emplea en el Backtracking
     public ArrayList <Horario> soluciones = new ArrayList <Horario>  ();
         
-    boolean sustituidoPorDuracion=false;
+    boolean sustituidoPorDuracion=true;
     
     public Main() {
         //Inicializa componentes
@@ -102,7 +102,7 @@ public class Main extends javax.swing.JFrame {
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00" }));
 
         jComboBox3.setEditable(true);
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0.30", "1.00", "1.30", "2.00", "2.30", "3.00", "3.30", "4.00", "4.30", "5.00", "5.30", "6.00", "6.30", "7.00", "7.30", "8.00", "8.30", "9.00" }));
         jComboBox3.setSelectedIndex(2);
 
         jLabel1.setText("Asignatura");
@@ -111,7 +111,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel3.setText("Hora inicial");
 
-        jLabel4.setText("Hora final");
+        jLabel4.setText("Duración");
 
         jButton2.setText("Generar horarios");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -139,7 +139,7 @@ public class Main extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setText("Sustituir hora final por duración");
+        jMenuItem3.setText("Sustituir duración por hora final");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuSustituir(evt);
@@ -491,10 +491,9 @@ public class Main extends javax.swing.JFrame {
 "Acerca de",
 JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_MenuAbout
-
+    
     private void MenuSustituir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSustituir
         // TODO add your handling code here:
-        
         if (sustituidoPorDuracion){
             sustituidoPorDuracion=false;
             jLabel4.setText("Hora final");
