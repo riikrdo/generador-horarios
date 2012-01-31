@@ -90,7 +90,7 @@ public class Main extends javax.swing.JFrame {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
+                tablaEliminarTurno(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -291,7 +291,7 @@ public class Main extends javax.swing.JFrame {
         tabla.addRow(nuevo);
     }//GEN-LAST:event_BotonInsertarFila
 
-    int dia2int ( String dia){
+    public static int dia2int ( String dia){
         if      (dia.equals("Lunes"))     return 1;
         else if (dia.equals("Martes"))    return 2;
         else if (dia.equals("Miércoles")) return 3;
@@ -307,7 +307,7 @@ public class Main extends javax.swing.JFrame {
     // Pero cada hora puede ser en punto, o y media, es decir, 2 valores
     // Entonces, lo que devuelve esta en el rango [0-30]
     // Donde 8->0, 8:30->1, 9->2, 9:30->3 ... 23:00->30
-    public int hora(double h)
+    public static int hora(double h)
     {
         h= (h-8)*2;
         int res= (int) h;
@@ -522,7 +522,7 @@ JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_MenuAbout
     
     private void MenuSustituir(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSustituir
-        // TODO add your handling code here:
+        
         if (sustituidoPorDuracion){
             sustituidoPorDuracion=false;
             jLabel4.setText("Hora final");
@@ -540,27 +540,26 @@ JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_MenuSustituir
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
-        for (int i=0; i < tabla.getRowCount(); i++){
-            if ((Boolean) tabla.getValueAt(i, 4) == true ){
-                
-                if ((JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,"¿Quieres eliminar este turno?","Eliminar turno",JOptionPane.YES_NO_OPTION))){
+    private void tablaEliminarTurno(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaEliminarTurno
+        
+        for (int i=0; i < tabla.getRowCount(); i++)
+        {
+            if ((Boolean) tabla.getValueAt(i, 4) == true )
+            {
+                if ((JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,"¿Quieres eliminar este turno?","Eliminar turno",JOptionPane.YES_NO_OPTION)))
+                {
                     tabla.removeRow(i);
-                    
                 }
                 else
                 {
                     tabla.setValueAt(false, i, 4);
                 }
-                
-//                i--;
             }
         }
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_tablaEliminarTurno
 
     private void Guardar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar
-        // TODO add your handling code here:
+        
         javax.swing.JFileChooser jF1= new javax.swing.JFileChooser(); 
         File f = new File("turnos.mnk"); 
         jF1.setSelectedFile(f); 
@@ -584,7 +583,7 @@ JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_Guardar
 
     private void MenuGuardar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        
 
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 

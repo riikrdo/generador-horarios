@@ -19,18 +19,22 @@ public final class VistaHorarios extends javax.swing.JFrame {
     DefaultTableModel tablaHorario;  
     DefaultTableModel tablaAsigs;  
     
+    Horario horario;
+    int horarioDibujado;
+    
     public VistaHorarios(ArrayList <Horario> s,ArrayList<Asignatura> a, Component ant) 
     {
         soluciones=s;
         asignaturas=a;
         anterior=ant;
+        horarioDibujado=0;
         
         //Carga los elementos del ComboBox de la tabla de asignaturas
         cargaListaTurnos();
         
         //Inicia vista
         initComponents();
-        jLabel1.setText("Generados "+s.size()+" horarios");
+        jLabel1.setText("Horarios generados: "+s.size());
         tablaHorario = (DefaultTableModel) jTable1.getModel();
         tablaAsigs = (DefaultTableModel) jTable2.getModel();
         
@@ -41,7 +45,17 @@ public final class VistaHorarios extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         
         //Dibuja el primer horario (soluciones.size > 0 al invocar)
-        Dibuja(soluciones.get(0));  
+        horario=soluciones.get(0);
+        actualizaHorario();
+        
+        
+//        //Listener para cuando cambie el ComboBox
+//        tablaAsigs.addTableModelListener(new TableModelListener() {
+//            @Override public void tableChanged(TableModelEvent e) 
+//            {
+//                cambioCombo();
+//            }
+//        });
     }
     
     private void cargaListaTurnos(){
@@ -72,8 +86,35 @@ public final class VistaHorarios extends javax.swing.JFrame {
              nuevo = new Object[] {asignaturas.get(i).nombre,""};
              tablaAsigs.addRow(nuevo);
          }
-        
+       
     }
+    //Comprueba que el contenido de la tabla de asignaturas y el de la tabla
+    //de horarios sea el mismo. Si no lo es, hay que refrescar la tablaHorario.
+//    public void cambioCombo()
+//    {
+//        for (int i=0; i < tablaAsigs.getRowCount(); i++)
+//        {
+//            if (!((String)tablaAsigs.getValueAt(i, 1)).equals(horario.clases[i].toString()))
+//            {
+//                System.out.println("CAmbio!!!");
+//                horarioDibujado=-1;
+//                jLabel3.setText("Horario mostrado: manual");
+//
+//                Clase [] caux = horario.clases.clone();
+//
+//                String nuevohorario=(String)tablaAsigs.getValueAt(i, 1);
+//
+//                caux[i].horaini=Main.hora(Double.parseDouble(nuevohorario.substring(2, 7).replace(':','.')));
+//                caux[i].horafin=Main.hora(Double.parseDouble(nuevohorario.substring(8, 13).replace(':','.')));
+//                caux[i].duracion=caux[i].horafin-caux[i].horaini;
+//
+//                horario = new Horario(caux);
+//
+//                Dibuja();
+//            }     
+//        }
+//    }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -93,6 +134,8 @@ public final class VistaHorarios extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -168,35 +211,35 @@ public final class VistaHorarios extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(6).setResizable(false);
         jTable1.getColumnModel().getColumn(7).setResizable(false);
 
-        jLabel1.setText("\"Generados \"+s.size()+\" horarios\"");
+        jLabel1.setText("Horarios generados");
 
         jLabel2.setText("Mostrar horario:");
 
         jTextField2.setText("1");
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField2KeyPressed(evt);
+                CuadroTexto(evt);
             }
         });
 
         jButton1.setText("Aceptar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botonAceptar(evt);
             }
         });
 
         jButton2.setText("Anterior");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                botonAnterior(evt);
             }
         });
 
         jButton3.setText("Siguiente");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                botonSiguiente(evt);
             }
         });
 
@@ -222,9 +265,20 @@ public final class VistaHorarios extends javax.swing.JFrame {
                 "Asignatura", "Turnos"
             }
         ));
+        jTable2.setFocusable(false);
+        jTable2.setRequestFocusEnabled(false);
         jTable2.setRowSelectionAllowed(false);
         jScrollPane2.setViewportView(jTable2);
         jTable2.getColumnModel().getColumn(1).setCellEditor(new MyComboEditor(listaTurnos));
+
+        jLabel3.setText("Horario mostrado: ");
+
+        jButton6.setText("Aplicar cambios manuales");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCambioManual(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,75 +286,76 @@ public final class VistaHorarios extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jButton4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5))
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jButton2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(3, 3, 3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton1))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton3))
+                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jButton4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton5)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 1, Short.MAX_VALUE)
                         .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3)
+                            .addComponent(jButton2))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton6)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
-                            .addComponent(jButton3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton5)
-                            .addComponent(jButton4))
-                        .addGap(9, 9, 9))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())))
+                            .addComponent(jButton4)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botonAceptar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptar
     
         actualizaHorario();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_botonAceptar
 
-    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+    private void CuadroTexto(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CuadroTexto
        
         actualizaHorario();
 //        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
 //            actualizaHorario();
 //        }
-    }//GEN-LAST:event_jTextField2KeyPressed
+    }//GEN-LAST:event_CuadroTexto
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void botonAnterior(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnterior
       
         int seleccion = Integer.parseInt(jTextField2.getText())-1;
         
@@ -310,9 +365,9 @@ public final class VistaHorarios extends javax.swing.JFrame {
             jTextField2.setText(a);
             actualizaHorario();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botonAnterior
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void botonSiguiente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSiguiente
         
         int seleccion = Integer.parseInt(jTextField2.getText());
         
@@ -323,7 +378,7 @@ public final class VistaHorarios extends javax.swing.JFrame {
             jTextField2.setText(a);
             actualizaHorario();
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_botonSiguiente
 String ExportDia(int d){
         String res;
         switch (d)
@@ -392,15 +447,13 @@ String ExportDia(int d){
     }
     private void BotonExportar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonExportar
       
-        Clase[] horario=soluciones.get(Integer.parseInt(jTextField2.getText())-1).clases;
-        
         //Crea el .ics
         String export="BEGIN:VCALENDAR\r\n";
-        for (int i=0; i < horario.length; i++){
-            export += "BEGIN:VEVENT\r\nSUMMARY:"+horario[i].asig
-                    + "\r\nDTSTART;TZID=Europe/Madrid:201201"+ExportFecha(horario[i].dia)+ExportHora(horario[i].horaini)
-                    + "\r\nDTEND;TZID=Europe/Madrid:201201"+ExportFecha(horario[i].dia)+ExportHora(horario[i].horafin)
-                    + "\r\nRRULE:FREQ=WEEKLY;BYDAY="+ExportDia(horario[i].dia)+"\r\nEND:VEVENT\r\n";
+        for (int i=0; i < horario.clases.length; i++){
+            export += "BEGIN:VEVENT\r\nSUMMARY:"+horario.clases[i].asig
+                    + "\r\nDTSTART;TZID=Europe/Madrid:201201"+ExportFecha(horario.clases[i].dia)+ExportHora(horario.clases[i].horaini)
+                    + "\r\nDTEND;TZID=Europe/Madrid:201201"+ExportFecha(horario.clases[i].dia)+ExportHora(horario.clases[i].horafin)
+                    + "\r\nRRULE:FREQ=WEEKLY;BYDAY="+ExportDia(horario.clases[i].dia)+"\r\nEND:VEVENT\r\n";
         }
         export += "END:VCALENDAR";
               
@@ -459,21 +512,64 @@ String ExportDia(int d){
         anterior.setVisible(true);
         this.setEnabled(false);
         this.setVisible(false);
+        
     }//GEN-LAST:event_menuVolver
+  
+    public static int inicial2int(char c) 
+    {       
+        switch (c)
+        {
+            case 'L': return 1;
+            case 'M': return 2;
+            case 'X': return 3;
+            case 'J': return 4;
+            case 'V': return 5;
+            case 'S': return 6;
+             default: return 7;            
+        }
+    }
+  
+    private void botonCambioManual(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCambioManual
+
+        Clase [] caux = new Clase [asignaturas.size()];
+        String valortabla;
+        
+        for (int i=0; i < tablaAsigs.getRowCount(); i++)
+        {
+            valortabla= (String) tablaAsigs.getValueAt(i,1);
+            
+            caux[i]= new Clase((String)tablaAsigs.getValueAt(i,0),
+                               inicial2int(valortabla.substring(0,1).charAt(0)),  
+                               Main.hora(Double.parseDouble(valortabla.substring(2, 7).replace(':','.'))),
+                               Main.hora(Double.parseDouble(valortabla.substring(8).replace(':','.'))));
+            
+            System.out.println(caux[i]);
+        }
+        
+        horario = new Horario(caux);
+
+        horarioDibujado=-1; //No me gusta esta variable
+        jLabel3.setText("Horario mostrado: manual");
+        Dibuja();
+    }//GEN-LAST:event_botonCambioManual
 
     void actualizaHorario(){
         
         int seleccion = Integer.parseInt(jTextField2.getText())-1;
         
-        if (seleccion > -1 && seleccion< soluciones.size()){
-            Dibuja(soluciones.get(seleccion));
+        if (seleccion > -1 && seleccion< soluciones.size())
+        {
+            horarioDibujado=seleccion;
+            horario=soluciones.get(seleccion);
+            jLabel3.setText("Horario mostrado: "+ (seleccion+1));
+            Dibuja();
         }
+        
+        
     }
          
     
-    public void Dibuja(Horario h){
-        
-        Clase[] c= h.clases;
+    public void Dibuja(){
         
         //Limpia
         for (int i=1; i < 8; i++){
@@ -483,57 +579,78 @@ String ExportDia(int d){
         }
         
         //Dibuja
-        for (int i=0; i < c.length; i++)
+        for (int i=0; i < horario.clases.length; i++)
         {
-            tablaHorario.setValueAt(c[i].asig, c[i].horaini, c[i].dia);
+            //Escribe el nombre de la asignatura
+            if ( "".equals((String) tablaHorario.getValueAt(horario.clases[i].horaini, horario.clases[i].dia)))
+            {
+                tablaHorario.setValueAt(horario.clases[i].asig, 
+                                        horario.clases[i].horaini, 
+                                        horario.clases[i].dia);
+            }
+            else
+            {
+                tablaHorario.setValueAt(tablaHorario.getValueAt(horario.clases[i].horaini, 
+                                                                horario.clases[i].dia)
+                                        +" , "+horario.clases[i].asig, 
+                                        horario.clases[i].horaini, 
+                                        horario.clases[i].dia);                
+            }
             
             //Dibuja guiones por debajo
-            for (int j=c[i].horaini+1; j < c[i].horafin ; j++) {
-                tablaHorario.setValueAt("-", j, c[i].dia);
+            for (int j=horario.clases[i].horaini+1; j < horario.clases[i].horafin ; j++) 
+            {
+                if ( "".equals((String) tablaHorario.getValueAt(j, horario.clases[i].dia)))
+                {
+                    tablaHorario.setValueAt("-", j, horario.clases[i].dia);
+                }
+                else
+                {
+                    tablaHorario.setValueAt(tablaHorario.getValueAt(j, horario.clases[i].dia)+" , -",
+                                            j, horario.clases[i].dia);
+                }
             }
             
             //Actualiza tabla de asignaturas
-            tablaAsigs.setValueAt(c[i].toString(),i,1);
+            tablaAsigs.setValueAt(horario.clases[i].toString(),i,1);
         }
-        
-        
-        
+               
         //Salida por terminal
-        System.out.println("-----Horario "+jTextField2.getText()+"-----\n"
+        System.out.println("-----Horario "+(horarioDibujado+1)+"-----\n"
                        +"Dias con clases:\n"
-                       +h.totaldias
+                       +horario.totaldias
                        +"\n\nAsignaturas:\n"
-                       +h.dias[0].numasignaturas+","
-                       +h.dias[1].numasignaturas+","
-                       +h.dias[2].numasignaturas+","
-                       +h.dias[3].numasignaturas+","
-                       +h.dias[4].numasignaturas+","
-                       +h.dias[5].numasignaturas+","
-                       +h.dias[6].numasignaturas
+                       +horario.dias[0].numasignaturas+","
+                       +horario.dias[1].numasignaturas+","
+                       +horario.dias[2].numasignaturas+","
+                       +horario.dias[3].numasignaturas+","
+                       +horario.dias[4].numasignaturas+","
+                       +horario.dias[5].numasignaturas+","
+                       +horario.dias[6].numasignaturas
                        +"\n\nMedias-horas en la uni: \n"
-                       +h.dias[0].tiempoEnLaUni+"+"
-                       +h.dias[1].tiempoEnLaUni+"+"
-                       +h.dias[2].tiempoEnLaUni+"+"
-                       +h.dias[3].tiempoEnLaUni+"+"
-                       +h.dias[4].tiempoEnLaUni+"+"
-                       +h.dias[5].tiempoEnLaUni+"+"
-                       +h.dias[6].tiempoEnLaUni+"="
-                       +h.tiempoEnLaUni
+                       +horario.dias[0].tiempoEnLaUni+"+"
+                       +horario.dias[1].tiempoEnLaUni+"+"
+                       +horario.dias[2].tiempoEnLaUni+"+"
+                       +horario.dias[3].tiempoEnLaUni+"+"
+                       +horario.dias[4].tiempoEnLaUni+"+"
+                       +horario.dias[5].tiempoEnLaUni+"+"
+                       +horario.dias[6].tiempoEnLaUni+"="
+                       +horario.tiempoEnLaUni
                        +"\n\nMedias-horas muertas:\n"
-                       +h.dias[0].horasmuertas+"+"
-                       +h.dias[1].horasmuertas+"+"
-                       +h.dias[2].horasmuertas+"+"
-                       +h.dias[3].horasmuertas+"+"
-                       +h.dias[4].horasmuertas+"+"
-                       +h.dias[5].horasmuertas+"+"
-                       +h.dias[6].horasmuertas+"="
-                       +h.horasmuertas
+                       +horario.dias[0].horasmuertas+"+"
+                       +horario.dias[1].horasmuertas+"+"
+                       +horario.dias[2].horasmuertas+"+"
+                       +horario.dias[3].horasmuertas+"+"
+                       +horario.dias[4].horasmuertas+"+"
+                       +horario.dias[5].horasmuertas+"+"
+                       +horario.dias[6].horasmuertas+"="
+                       +horario.horasmuertas
                        +"\n\nMedia y desviacion hora de entrada;\n"
-                       +h.mediaEntrada+", "+h.desviacionHoraEntrada
+                       +horario.mediaEntrada+", "+horario.desviacionHoraEntrada
                        +"\n\nMedia y desviacion num asignaturas:\n"
-                       +h.mediasig+", "+h.desviacionNumAsignaturas
+                       +horario.mediasig+", "+horario.desviacionNumAsignaturas
                        +"\n\nDias tiempo para comer:\n"
-                       +h.diasconlahoradelacomidalibre+"\n");
+                       +horario.diasconlahoradelacomidalibre+"\n");
     }
     
     public static void main(String args[]) {
@@ -581,9 +698,11 @@ String ExportDia(int d){
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -596,27 +715,33 @@ String ExportDia(int d){
     //Carga editor de ComboBox para la tabla de asignaturas
     private class MyComboEditor extends DefaultCellEditor{
 
-            List<String[]> values;
+        List<String[]> values;
 
-            public MyComboEditor(List<String[]> values){
-                    super(new JComboBox());
-                    this.values = values;
-            }
+        public MyComboEditor(List<String[]> values){
+            super(new JComboBox());
+            this.values = values;
+        }
 
         @Override
-            public Component getTableCellEditorComponent(JTable table, Object value,
-                        boolean isSelected, int row, int column) {
+            public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) 
+            {
+                JComboBox combo = (JComboBox)getComponent();
+                combo.removeAllItems();
+                String[] valores = values.get(row);
 
-                    JComboBox combo = (JComboBox)getComponent();
-                    combo.removeAllItems();
-                    String[] valores = values.get(row);
+                for(int i=0; i<valores.length; i++){
+                        combo.addItem(valores[i]);
+                }
+                combo.setSelectedItem(value);
+                
+//                combo.addActionListener (new ActionListener () {
+//                        @Override
+//                        public void actionPerformed(ActionEvent e) {
+//                            cambioCombo();
+//                        }
+//                        });
 
-                    for(int i=0; i<valores.length; i++){
-                            combo.addItem(valores[i]);
-                    }
-                    combo.setSelectedItem(value);
-
-                    return combo;
+                return combo;
             }
     }
 }
