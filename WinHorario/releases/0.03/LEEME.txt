@@ -7,7 +7,7 @@ Versión 0.03
 
 ==Uso==
 
-Introduce los turnos de cada asignatura y la aplicación genera todos los posibles horarios.
+Introduce los turnos de cada asignatura y la aplicación generará todos los posibles horarios.
 
 Los horarios pueden ser exportados en formato .ics, para importarlos en Google Calendar.
 

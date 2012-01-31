@@ -1,8 +1,7 @@
 public class Horario implements Comparable <Horario> {
     Clase[] clases;
     Dia[] dias;
-    int totaldias,tiempoEnLaUni,horasmuertas;
-    int diasconlahoradelacomidalibre;
+    int totaldias,tiempoEnLaUni,horasmuertas, diasconlahoradelacomidalibre;
     double mediaEntrada,desviacionHoraEntrada,mediasig,desviacionNumAsignaturas;
     
     Horario (Clase[] c){
@@ -10,12 +9,12 @@ public class Horario implements Comparable <Horario> {
         totaldias=0;
         tiempoEnLaUni=0;
         horasmuertas=0;
-        
         mediaEntrada=0; //sumatorio(dia[i].horafin-dia[i].horaini)/totaldias
         desviacionHoraEntrada=0;
         mediasig=0;
         desviacionNumAsignaturas=0;
         diasconlahoradelacomidalibre=0;
+        
         dias = new Dia[7];
         for (int i=0; i<7;i++) dias[i]=new Dia();
         
@@ -25,7 +24,8 @@ public class Horario implements Comparable <Horario> {
         }
         
         
-        boolean flagcomer=false;        
+        boolean flagcomer=false;     
+        
         for (int i=0; i<7;i++)
         {
             if (dias[i].horasDeClase != 0)
@@ -36,21 +36,24 @@ public class Horario implements Comparable <Horario> {
                 mediasig+=dias[i].numasignaturas;
             }
             
-            for (int j=dias[i].ini; j <dias[i].fin; j++){
-                if (!dias[i].ocupado[j]){
+            for (int j=dias[i].ini; j <dias[i].fin; j++)
+            {
+                if (!dias[i].ocupado[j])
+                {
                     dias[i].horasmuertas++;
                     horasmuertas++;
                 }
                 
                 //10->13 y 15->15:30
-                for (int k=10; k <= 15; k++){
+                for (int k=10; k <= 15; k++)
+                {
                     
                     if (!dias[i].ocupado[k])
                     {
                         if (flagcomer) 
                         {
                             dias[i].horapacomer=true;
-                            horasmuertas-=2; //No se considera hora muerta comer
+//                            dias[i].horasmuertas-=2; //No se considera hora muerta comer
                         }
                         else            flagcomer=true;
                     }
@@ -62,11 +65,17 @@ public class Horario implements Comparable <Horario> {
         
         mediaEntrada/=totaldias;
         mediasig/=totaldias;
-        for (int i=0; i<7; i++){
-            if (dias[i].horasDeClase!=0){
+        for (int i=0; i<7; i++)
+        {
+            if (dias[i].horasDeClase!=0)
+            {
                 desviacionHoraEntrada += (dias[i].ini-mediaEntrada)*(dias[i].ini-mediaEntrada);
                 desviacionNumAsignaturas += (dias[i].numasignaturas-mediasig)*(dias[i].numasignaturas-mediasig);
-                if (dias[i].horapacomer) diasconlahoradelacomidalibre++;
+                if (dias[i].horapacomer)
+                {
+                    diasconlahoradelacomidalibre++;
+//                    horasmuertas--;
+                }
             }
         }
         desviacionHoraEntrada/= totaldias-1;
@@ -78,28 +87,29 @@ public class Horario implements Comparable <Horario> {
     @Override
     public int compareTo(Horario h) 
     { 
-        int res = totaldias - h.totaldias;
+        int res = h.diasconlahoradelacomidalibre - diasconlahoradelacomidalibre; 
                 
-        if (res==0) res= h.diasconlahoradelacomidalibre - diasconlahoradelacomidalibre;
+        if (res==0) res= horasmuertas - h.horasmuertas;
+        
+        if (res==0) res = totaldias - h.totaldias;
+        
+        if (res==0) res = tiempoEnLaUni - h.tiempoEnLaUni; 
         
         if (res != 0) return res;
         else
         {
             double aux = desviacionHoraEntrada - h.desviacionHoraEntrada;
             
-             if (aux < 0) return -1;
-             else if (aux > 0) return 1;
-             else{
-                
-        
-                res = horasmuertas - h.horasmuertas;
-        
-                
-                if (res == 0) res = tiempoEnLaUni - h.tiempoEnLaUni;  
-                if (res == 0){
+             if      (aux < 0) return -1;
+             else if (aux > 0) return  1;
+             else
+             {
+                 
+                if (res == 0)
+                {
                     aux=desviacionNumAsignaturas-h.desviacionNumAsignaturas;
                     if      (aux < 0) return -1;
-                    else if (aux > 0) return 1;
+                    else if (aux > 0) return  1;
                     else return 0;
                 }
                      

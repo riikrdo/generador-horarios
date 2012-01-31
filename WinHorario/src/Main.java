@@ -320,7 +320,7 @@ public class Main extends javax.swing.JFrame {
     private void BotonGenerarHorarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGenerarHorarios
      if (tabla.getRowCount() > 0){
         ArrayList <Clase> filas = new ArrayList <Clase> ();
-        int horaini;
+//        int horaini;
         for (int i=0; i< tabla.getRowCount(); i++)
         {
 //            horaini=hora(Double.parseDouble(((String) tabla.getValueAt(i, 2)).replace(':','.')));
@@ -369,27 +369,32 @@ public class Main extends javax.swing.JFrame {
         
             if (soluciones.size() > 0)
             {
+                //Ordena el vector
+                Collections.sort(soluciones);                
+                
+                //Copia los ArrayList para poder borrar residuos de backtracking
+                ArrayList <Horario>  solucopia=new ArrayList <Horario> ();
+                solucopia.addAll(soluciones);
+                
+                ArrayList<Asignatura> asigcopia=new ArrayList<Asignatura>();
+                asigcopia.addAll(Asignaturas);
+                
                 //Carga vista de horarios
-                VistaHorarios res=new VistaHorarios();
+                VistaHorarios res=new VistaHorarios(solucopia,asigcopia,this);
                 res.setVisible(true);
-                
-                ArrayList <Horario>  mando=new ArrayList <Horario> ();
-                mando.addAll(soluciones);
-                
-                res.ejecuta(mando,this);
                 this.setVisible(false);
             }
             else
             {
-                JOptionPane.showMessageDialog(this,"No existen combinaciones posibles con este horario :(",
-                                             "Cachis...",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,"No existen horarios posibles con estos turnos.",
+                                             "Generar horarios",JOptionPane.ERROR_MESSAGE);
             }
         
         
             //Limpia BT
             Asignaturas.clear();
-            maxTurnos=0;
             soluciones.clear();   
+            maxTurnos=0;
         }
     }
      void IncluyeEnSoluciones() {
