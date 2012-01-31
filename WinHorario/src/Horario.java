@@ -14,8 +14,8 @@ public class Horario implements Comparable <Horario> {
         mediasig=0;
         desviacionNumAsignaturas=0;
         diasconlahoradelacomidalibre=0;
-        
         dias = new Dia[7];
+        
         for (int i=0; i<7;i++) dias[i]=new Dia();
         
         for (int i=0; i < clases.length; i++)

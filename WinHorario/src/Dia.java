@@ -9,13 +9,14 @@
  * @author monkey
  */
 public class Dia {
-    public int ini, fin, horasDeClase, tiempoEnLaUni, numasignaturas; 
+    public int ini, fin, horasDeClase, tiempoEnLaUni, numasignaturas,horasmuertas; 
     public double mediainifin;
     
     boolean [] ocupado = new boolean[30];
-    int horasmuertas;
     public boolean horapacomer;
-    Dia(){
+    
+    Dia()
+    {
         ini=30;
         fin=0;
         horasDeClase=0;
@@ -27,9 +28,8 @@ public class Dia {
         for (int i=0; i<30; i++) ocupado[i]=false;
     }
     
-    
-    void Clase(Clase c){
-                
+    void Clase(Clase c)
+    {  
         numasignaturas++;
         
         for (int i=c.horaini; i < c.horafin; i++){
@@ -55,7 +55,5 @@ public class Dia {
             horasDeClase += c.duracion;
             tiempoEnLaUni = fin-ini;
         }
-        
     }
-    
 }
